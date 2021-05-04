@@ -51,11 +51,8 @@ const HomePage: React.FC<{}> = () => {
                             return (
                                 <FarmGrid
                                     key={index}
-                                    dataY={cell.y}
-                                    dataX={cell.x}
-                                    sourceOfOutbreak={cell.sourceOfOutbreak}
-                                    isInfectedNeighbour={cell.infectedNeighbour}
-                                    id={`${cell.x},${cell.y}`}
+                                    data={cell}
+                                    id={`${cell.x}-${cell.y}`}
                                 >{`${cell.x} ${cell.y}`}</FarmGrid>
                             );
                         });

@@ -1,12 +1,5 @@
-import { apiResponseData, grid } from './models/grid';
+import { apiResponseData, grid, impactLevel } from './models/grid';
 import { direction } from './models/direction';
-
-enum impactLevel {
-    None = '0',
-    Low = '25%',
-    Medium = '50%',
-    High = '80%',
-}
 
 /**
  * Grid coordinates

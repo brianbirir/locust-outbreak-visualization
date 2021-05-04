@@ -1,34 +1,31 @@
 import React, { useRef, useState, useEffect } from 'react';
+import { Box, BoxProps, Text, Center } from '@chakra-ui/react';
 
-import { Box, BoxProps } from '@chakra-ui/react';
+import { grid, impactLevel } from '../models/grid';
 
 interface IProps extends BoxProps {
-    dataY?: number;
-    dataX?: number;
-    sourceOfOutbreak?: boolean;
-    isInfectedNeighbour?: boolean;
+    data: grid;
 }
 
 const FarmGrid: React.FC<IProps> = (props) => {
-    const {
-        dataX,
-        dataY,
-        sourceOfOutbreak,
-        isInfectedNeighbour,
-        ...rest
-    } = props;
+    const [impactColor, setImpactColor] = useState('');
+    const { data, ...rest } = props;
     const boxElementRef = useRef<HTMLDivElement>(null);
     const [height, setHeight] = useState<number>();
 
-    const impactColor = () => {
-        if (sourceOfOutbreak) {
-            return '#C53030';
-        } else if (isInfectedNeighbour) {
-            return '#F6E05E';
+    useEffect(() => {});
+
+    useEffect(() => {
+        if (data.impactLevel === impactLevel.High) {
+            setImpactColor('#C53030');
+        } else if (data.impactLevel === impactLevel.Medium) {
+            setImpactColor('#F6E05E');
+        } else if (data.impactLevel === impactLevel.Low) {
+            setImpactColor('#FEEBC8');
         } else {
-            return '#F0FFF4';
+            setImpactColor('#F0FFF4');
         }
-    };
+    }, [data.impactLevel]);
 
     useEffect(() => {
         let box = boxElementRef.current;
@@ -40,18 +37,29 @@ const FarmGrid: React.FC<IProps> = (props) => {
         <>
             <Box
                 className="farm"
-                color={sourceOfOutbreak ? 'white' : 'black'}
+                color={'black'}
                 w="100%"
                 h={height}
                 border="1px"
                 borderColor="gray.200"
-                bg={impactColor()}
-                data-y={dataY}
-                data-x={dataX}
+                bg={impactColor}
+                data-y={data.y}
+                data-x={data.x}
                 ref={boxElementRef}
                 {...rest}
             >
-                {props.children}
+                <Center h={height} w="100%">
+                    {data.infectedNeighbour && (
+                        <Text fontSize="sm" fontWeight="bold">
+                            {data.impactLevel} Loss
+                        </Text>
+                    )}
+                    {data.sourceOfOutbreak && (
+                        <Text fontSize="sm" fontWeight="bold">
+                            {data.impactLevel} Loss
+                        </Text>
+                    )}
+                </Center>
             </Box>
         </>
     );
