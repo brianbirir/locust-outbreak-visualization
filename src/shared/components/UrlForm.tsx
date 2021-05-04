@@ -51,6 +51,11 @@ const UrlForm: React.FC<IUrlFormProps> = (props) => {
             .catch((error: AxiosError) => console.error(error.response?.data));
     };
 
+    const handleReset = () => {
+        setFormState({ url: '' });
+        props.parentCallback('');
+    };
+
     return (
         <Box w="100%" p={4}>
             <form onSubmit={onSubmit}>
@@ -68,10 +73,20 @@ const UrlForm: React.FC<IUrlFormProps> = (props) => {
                         />
                     </InputGroup>
                     <FormHelperText>
-                        Input URL to fetch farm data
+                        Input URL to fetch farm data e.g.
+                        https://run.mocky.io/v3/efc06fd8-cef1-4da6-b77f-9c03d3bb0eae
                     </FormHelperText>
-                    <Button mt={4} colorScheme="teal" type="submit">
+                    <Button marginX={2} mt={4} colorScheme="teal" type="submit">
                         Run
+                    </Button>
+                    <Button
+                        marginX={2}
+                        mt={4}
+                        colorScheme="teal"
+                        variant="outline"
+                        onClick={handleReset}
+                    >
+                        Reset
                     </Button>
                 </FormControl>
             </form>
