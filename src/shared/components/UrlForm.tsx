@@ -15,7 +15,10 @@ import {
     AlertTitle,
     AlertDescription,
     CloseButton,
+    FormErrorMessage,
 } from '@chakra-ui/react';
+
+import { validateUrl } from '../helpers';
 
 interface IUrlFormProps {
     parentCallback(data: any): void;
@@ -26,6 +29,7 @@ const UrlForm: React.FC<IUrlFormProps> = (props) => {
         url: '',
     });
     const [error, setError] = useState<boolean>(false);
+    const [formError, setFormError] = useState<boolean>(false);
 
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         event.preventDefault();
@@ -38,6 +42,9 @@ const UrlForm: React.FC<IUrlFormProps> = (props) => {
     const handlePaste = (event: any) => {
         event.preventDefault();
         const pastedValue = event.clipboardData.getData('text');
+        if (!validateUrl(pastedValue)) {
+            setFormError(true);
+        }
         setFormState({
             ...form,
             [event.target.name]: pastedValue,
@@ -50,7 +57,10 @@ const UrlForm: React.FC<IUrlFormProps> = (props) => {
         if (form.url === '') {
             setError(true);
         }
-        console.log('I got clicked');
+
+        if (!validateUrl(form.url)) {
+            setFormError(true);
+        }
         props.loadingState(true);
         await axios
             .get(form.url)
@@ -68,6 +78,7 @@ const UrlForm: React.FC<IUrlFormProps> = (props) => {
 
     const closeAlert = () => {
         setError(false);
+        setFormError(false);
     };
 
     return (
@@ -79,6 +90,20 @@ const UrlForm: React.FC<IUrlFormProps> = (props) => {
                     <AlertDescription>
                         Please provide a URL to simulate locust outbreak
                     </AlertDescription>
+                    <CloseButton
+                        position="absolute"
+                        right="8px"
+                        top="8px"
+                        onClick={closeAlert}
+                    />
+                </Alert>
+            )}
+
+            {formError && (
+                <Alert status="warning">
+                    <AlertIcon />
+                    <AlertTitle mr={2}>Invalid URL!</AlertTitle>
+                    <AlertDescription>Provided URL is invalid</AlertDescription>
                     <CloseButton
                         position="absolute"
                         right="8px"
@@ -106,19 +131,20 @@ const UrlForm: React.FC<IUrlFormProps> = (props) => {
                         Input URL to fetch farm data e.g.
                         https://run.mocky.io/v3/efc06fd8-cef1-4da6-b77f-9c03d3bb0eae
                     </FormHelperText>
-                    <Button marginX={2} mt={4} colorScheme="teal" type="submit">
-                        Run
-                    </Button>
-                    <Button
-                        marginX={2}
-                        mt={4}
-                        colorScheme="teal"
-                        variant="outline"
-                        onClick={handleReset}
-                    >
-                        Reset
-                    </Button>
+                    <FormErrorMessage>Test</FormErrorMessage>
                 </FormControl>
+                <Button marginX={2} mt={4} colorScheme="teal" type="submit">
+                    Run
+                </Button>
+                <Button
+                    marginX={2}
+                    mt={4}
+                    colorScheme="teal"
+                    variant="outline"
+                    onClick={handleReset}
+                >
+                    Reset
+                </Button>
             </form>
         </Box>
     );
