@@ -7,7 +7,6 @@ A web simulator to visualize locust outbreak in a farmland located in Ethiopia. 
 -   Chakra UI
 -   Axios
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Deployment
 
@@ -21,3 +20,7 @@ To run the app:
 
 -   Insert a valid URL from the mock API URL in the input field.
 -   Click Run button to generate a map that will display impact of the locust outbreak and an overall impact value
+
+
+https://user-images.githubusercontent.com/2263386/117071040-3a6d9a00-ad37-11eb-895f-15b21225dbc4.mov
+
