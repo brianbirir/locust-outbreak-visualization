@@ -10,6 +10,11 @@ import {
     InputLeftAddon,
     Button,
     Box,
+    Alert,
+    AlertIcon,
+    AlertTitle,
+    AlertDescription,
+    CloseButton,
 } from '@chakra-ui/react';
 
 interface IUrlFormProps {
@@ -20,6 +25,7 @@ const UrlForm: React.FC<IUrlFormProps> = (props) => {
     const [form, setFormState] = useState({
         url: '',
     });
+    const [error, setError] = useState<boolean>(false);
 
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         event.preventDefault();
@@ -40,6 +46,10 @@ const UrlForm: React.FC<IUrlFormProps> = (props) => {
 
     const onSubmit = async (event: any) => {
         event.preventDefault();
+
+        if (form.url === '') {
+            setError(true);
+        }
         console.log('I got clicked');
         props.loadingState(true);
         await axios
@@ -56,8 +66,28 @@ const UrlForm: React.FC<IUrlFormProps> = (props) => {
         props.parentCallback('');
     };
 
+    const closeAlert = () => {
+        setError(false);
+    };
+
     return (
         <Box w="100%" p={4}>
+            {error && (
+                <Alert status="error">
+                    <AlertIcon />
+                    <AlertTitle mr={2}>No URL!</AlertTitle>
+                    <AlertDescription>
+                        Please provide a URL to simulate locust outbreak
+                    </AlertDescription>
+                    <CloseButton
+                        position="absolute"
+                        right="8px"
+                        top="8px"
+                        onClick={closeAlert}
+                    />
+                </Alert>
+            )}
+
             <form onSubmit={onSubmit}>
                 <FormControl id="email">
                     <FormLabel>Data Source URL</FormLabel>
