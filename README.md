@@ -1,6 +1,6 @@
 # Locust Outbreak Simulator
 
-A web simulator to visualize locust outbreak in a farmland located in Ethiopia. The web app is built using:
+A web simulator to visualize locust outbreak in a farmland located in Ethiopia using mock data from a mock API endpoint. The web app is built using:
 
 -   React - 17+
 -   Typescript
